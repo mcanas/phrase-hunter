@@ -15,16 +15,38 @@ class Phrase:
     letters = None
 
     def __init__(self, phrase):
+        '''
+        Parameters
+        ----------
+            phrase : str
+                The phrase passed through the constructor of the class.
+        '''
         self.phrase = phrase.lower()
         self.letters_in_phrase = set(self.phrase)
         self.letters_in_phrase.discard(' ')
 
     def __eq__(self, other):
+        '''
+        Parameters
+        ----------
+            other : str
+                A string that represents a phrase to compare against.
+
+        Returns
+        -------
+            boolean
+                True if the phrases are equal, False otherwise.
+        '''
         return self.phrase == other
 
     def display(self, guessed_letters):
-        '''Render the current phrase with guessed letters visible.
+        '''Prints the current phrase with guessed letters visible.
                 Unguessed letters are rendered as underscores.
+
+        Parameters
+        ----------
+            guessed_letters : list
+                A list of guessed letters to compare against the phrase.
         '''
         output = []
         for letter in self.phrase:
