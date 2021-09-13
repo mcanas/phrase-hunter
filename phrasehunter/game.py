@@ -66,7 +66,12 @@ class Game:
         print(WELCOME)
 
     def confirm_game_start(self):
-        '''Get confirmation for starting a new game.
+        '''Get confirmation for starting a new game. Validates against incorrect responses.
+
+        Returns
+        -------
+            boolean
+                True if the user confirms game start with "Y", False if "N".
         '''
         while True:
             confirm_game_start = input(
@@ -83,6 +88,11 @@ class Game:
     def get_random_phrase(self):
         '''Get a random phrase from the phrase library and create
             a new Phrase object.
+
+        Returns
+        -------
+            Phrase
+                The new Phrase to use for the game.
         '''
         while True:
             random_phrase = random.choice(PHRASES)
@@ -91,7 +101,12 @@ class Game:
                 return self.phrases[-1]
 
     def get_guess(self):
-        '''Get a single a-z letter from input.
+        '''Get a single a-z letter from input. Validates against incorrect input.
+
+        Returns
+        -------
+            str
+                The valid letter from input.
         '''
         while True:
             guess = input('Enter a letter to make your next guess: ')
