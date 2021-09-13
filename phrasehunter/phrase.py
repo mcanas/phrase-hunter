@@ -1,21 +1,28 @@
-# Create your Phrase class logic here.
-
-# Create a Phrase class
-
-# has an __init__() method
-#   accepts a phrase param
-#   holds the phrase in an instance attribute
-#   phrase attribute value should be lower case
+from phrasehunter.constants import PHRASES
 
 
-# has a display() method
-#   prints phrase to console with guessed letters visible and unguessed letters as underscores
-#     ex: For phrase "Hello World" and guess is "o", output is: _ _ _ _ o  _ o _ _ _
+class Phrase:
+    phrase = None
+    letters = None
 
+    def __init__(self, phrase):
+        self.phrase = phrase.lower()
+        self.letters_in_phrase = set(self.phrase)
+        self.letters_in_phrase.discard(' ')
 
-# has a check_letters() method
-#   checks to see if guessed letter is in the phrase
+    def __eq__(self, other):
+        return self.phrase == other
 
+    def display(self, guessed_letters):
+        output = []
+        for letter in self.phrase:
+            char = letter if letter == ' ' or letter in guessed_letters else '_'
+            output.append(char)
 
-# has a check_complete() method
-#   checks to see if phrase has been guessed
+        print(f"\n{' '.join(output)}\n")
+
+    def check_letter(self, letter):
+        return letter in self.phrase
+
+    def check_complete(self, guessed_letters):
+        return len(self.letters_in_phrase - set(guessed_letters)) == 0
