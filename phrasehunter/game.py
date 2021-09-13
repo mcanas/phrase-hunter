@@ -4,7 +4,7 @@ from phrasehunter.phrase import Phrase
 
 
 class Game:
-    '''The Game class controls the flow of Phrase Hunter game.
+    '''The Game class controls the flow of Phrase Hunter game
 
     Attributes
     ----------
@@ -17,7 +17,7 @@ class Game:
         active_phrase : Phrase
             The current phrase as a Phrase instance. Defaults to None.
         guesses : str[]
-            Stores a history of guessed letters. Defaults to []
+            Stores a history of guessed letters. Defaults to [].
     '''
 
     def __init__(self):
@@ -30,11 +30,13 @@ class Game:
         self.guesses = []
 
     def start(self):
-        '''Starts the game loop
+        '''Starts the game loop.
         '''
         self.welcome()
 
         while True:
+            # Determine if the game has been started
+            #   otherwise get game start confirmation
             if self.active_phrase is None:
                 if self.confirm_game_start():
                     self.active_phrase = self.get_random_phrase()
@@ -42,13 +44,12 @@ class Game:
                     print('\nGoodbye!')
                     break
 
+            # Display progress and get a valid guess
             self.active_phrase.display(self.guesses)
-
             guess = self.get_guess()
-            if guess == None:
-                continue
             self.guesses.append(guess)
 
+            # Check if the game has been won or lost
             if self.active_phrase.check_letter(guess):
                 if self.active_phrase.check_complete(self.guesses):
                     self.game_over(True)
@@ -60,12 +61,12 @@ class Game:
                     self.game_over(False)
 
     def welcome(self):
-        '''Prints a welcome message to the console
+        '''Print a welcome message to the console.
         '''
         print(WELCOME)
 
     def confirm_game_start(self):
-        '''Gets confirmation for starting a new game
+        '''Get confirmation for starting a new game.
         '''
         while True:
             confirm_game_start = input(
@@ -80,32 +81,37 @@ class Game:
                 return True if confirm_game_start == 'y' else False
 
     def get_random_phrase(self):
-        '''Gets a random phrase from phrase library and instantiates
+        '''Get a random phrase from the phrase library and create
             a new Phrase object.
         '''
         while True:
             random_phrase = random.choice(PHRASES)
             if random_phrase not in self.phrases:
-                phrase = Phrase(random_phrase)
-                self.phrases.append(phrase)
-                return phrase
+                self.phrases.append(Phrase(random_phrase))
+                return self.phrases[-1]
 
     def get_guess(self):
-        '''Gets a single a-z letter from input
+        '''Get a single a-z letter from input.
         '''
-        guess = input('Enter a letter to make your next guess: ')
-        guess = guess.lower()
-        try:
-            if guess not in VALID_CHARS:
-                raise ValueError(
-                    'You entered an invalid character. Please try again.')
-        except ValueError as err:
-            print(f'\nOops! Something went wrong: {err}')
-        else:
-            return guess
+        while True:
+            guess = input('Enter a letter to make your next guess: ')
+            guess = guess.lower()
+            try:
+                if guess not in VALID_CHARS:
+                    raise ValueError(
+                        'You entered an invalid character. Please try again.')
+            except ValueError as err:
+                print(f'\nOops! Something went wrong: {err}\n')
+            else:
+                return guess
 
     def game_over(self, is_win):
-        '''Ends the current game and resets default values to prepare for the next game
+        '''Ends the current game and resets default values to prepare for the next game.
+
+        Parameters
+        ----------
+        is_win : boolean
+            A flag used to determine the win or lose message that will print to the console.
         '''
         self.active_phrase.display(self.guesses)
         print(f'\n{YOU_WIN if is_win else YOU_LOSE}\n')
